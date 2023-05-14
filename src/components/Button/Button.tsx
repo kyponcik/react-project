@@ -1,10 +1,11 @@
 interface ButtonProps {
-   onClick: () => void;
+  onClick: () => void;
 }
-export const Button = ({onClick}: ButtonProps) => {
-   return(
-      <>
-         <button onClick={onClick}>Click</button>
-      </>
-   );
+
+export const Button = ({ onClick }: ButtonProps) => {
+  return (
+    <>
+      <button onClick={onClick}>Click</button>
+    </>
+  );
 };
