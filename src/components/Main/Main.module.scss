@@ -1,0 +1,25 @@
+.main_container{
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+
+.main_menu{
+   display: flex;
+   justify-content: center;
+   
+}
+
+.main_load_btn{
+   margin-right: 10px;
+}
+
+.main_container_loaded{
+   display: block;
+}
+
+.main_menu_loaded{
+   justify-content: flex-start;
+}
