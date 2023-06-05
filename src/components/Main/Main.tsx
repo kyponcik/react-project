@@ -31,7 +31,7 @@ export const Main = () => {
   };
 
   const handleClear = () => {
-    /* setState([]); */ //
+    setState([]);
     setPics([]);
     setDataLoaded(false);
   };

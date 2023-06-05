@@ -1,5 +1,6 @@
 export const getRandomQuotes = () => {
-  return fetch("https://animechan.vercel.app/api/quotes").then((response) =>
-    response.json()
-  );
+  const url = "https://animechan.vercel.app/api/quotes";
+  const tempUrl = "http://animechan.melosh.space/quotes";
+
+  return fetch(tempUrl).then((response) => response.json());
 };
