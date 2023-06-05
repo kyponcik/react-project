@@ -63,7 +63,12 @@ export const List = ({ listQuotes, listPic }: ListProps) => {
 
   return (
     <>
-      <Grid container spacing={4} rowSpacing={2}>
+      <Grid
+        container
+        spacing={4}
+        rowSpacing={2}
+        className={styles.content_container}
+      >
         {list}
       </Grid>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>

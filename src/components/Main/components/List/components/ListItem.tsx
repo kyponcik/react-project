@@ -8,6 +8,7 @@ import cx from "classnames";
 import { adaptedItemData } from "../../../../../interfaces/ListItem";
 import { Grid, IconButton } from "@mui/material";
 import { Button } from "../../Button/Button";
+import { useThemeContext } from "../../../../../context/ThemeProvider";
 
 interface ListItemProps {
   onHeartClick: (id: string) => void;
@@ -23,6 +24,7 @@ export const ListItem = ({
   onModalClick,
 }: ListItemProps) => {
   const { quote, pic, isLiked, id } = item;
+  const { value } = useThemeContext();
   const heartIconClasses = cx(styles.heart_icon, styles.icon, {
     [styles.heart_icon_liked]: isLiked,
     [styles.heart_icon_default]: !isLiked,
@@ -30,7 +32,11 @@ export const ListItem = ({
 
   return (
     <Grid item xs={5} className={styles.list_item_wrapper}>
-      <div className={styles.list_item_container}>
+      <div
+        className={cx(styles.list_item_container, {
+          [styles.dark_theme]: value == "dark",
+        })}
+      >
         <div className={styles.list_item_content}>
           <div className={styles.list_item_content_quote}>
             <span>{quote}</span>

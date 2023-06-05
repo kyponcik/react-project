@@ -1,10 +1,11 @@
 import { Main } from "./components/Main/Main";
+import { ThemeProvider } from "./context/ThemeProvider";
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider>
       <Main />
-    </div>
+    </ThemeProvider>
   );
 }
 

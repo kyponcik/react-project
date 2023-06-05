@@ -7,12 +7,15 @@ import { getRandomPics } from "../../api/getRandomPics";
 import { Quote, Image } from "../../interfaces/List";
 import { quote } from "../../mocks/Quotes";
 import cx from "classnames";
+import { useThemeContext } from "../../context/ThemeProvider";
+import { Switch, FormControlLabel } from "@mui/material";
 
 export const Main = () => {
   const [state, setState] = useState<Quote[] | []>(quote);
   const [pic, setPics] = useState<Image[] | []>([]);
   const [isDataLoaded, setDataLoaded] = useState(false);
   const [isCurrentDataNSFW, setIsCurrentDataNSFW] = useState(false);
+  const { value, setToDark, setToLight } = useThemeContext();
 
   const handleClick = (isNSFW = false) => {
     getRandomQuotes().then((quotes) => setState(quotes));
@@ -36,13 +39,22 @@ export const Main = () => {
     setDataLoaded(false);
   };
 
+  const handleChangeTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.target.checked ? setToDark() : setToLight();
+  };
+
   return (
     <div
       className={cx({
         [styles.main_container]: !isDataLoaded,
         [styles.main_container_loaded]: isDataLoaded,
+        [styles.dark_theme]: value == "dark",
       })}
     >
+      <FormControlLabel
+        control={<Switch onChange={handleChangeTheme} />}
+        label="Change Theme"
+      />
       <div
         className={cx({
           [styles.main_menu]: !isDataLoaded,
