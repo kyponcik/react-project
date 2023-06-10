@@ -10,14 +10,8 @@ import { useApiContext } from "../../context/ApiProvider";
 export const Main = () => {
   const [isDataLoaded, setDataLoaded] = useState(false);
   const { value, setToDark, setToLight } = useThemeContext();
-  const {
-    quote,
-    listQuotesLoad,
-    clearList,
-    pics,
-    listPicLoaded,
-    listPicReload,
-  } = useApiContext();
+  const { listQuotesLoad, clearList, pics, listPicLoaded, listPicReload } =
+    useApiContext();
 
   const handleClick = (isNSFW = false) => {
     listQuotesLoad();
@@ -30,7 +24,7 @@ export const Main = () => {
   };
 
   const handleClear = () => {
-    clearList();
+    clearList;
     setDataLoaded(false);
   };
 
@@ -74,7 +68,7 @@ export const Main = () => {
           </>
         )}
       </div>
-      {!!pics.length && <List listQuotes={quote} listPic={pics} />}
+      {!!pics.length && <List />}
     </div>
   );
 };

@@ -7,49 +7,33 @@ import { adaptedItemData } from "../../../../interfaces/ListItem";
 import { Grid } from "@mui/material";
 import { ListItemPreview } from "./components/ListItemPreview";
 import { Modal } from "../Modal/Modal";
+import { useApiContext } from "../../../../context/ApiProvider";
 
-interface ListProps {
-  listQuotes: Quote[];
-  listPic: Image[];
-}
-
-export const List = ({ listQuotes, listPic }: ListProps) => {
-  const { adaptedList } = useListAdapter(listQuotes, listPic);
-  const [state, setState] = useState(adaptedList);
+export const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<adaptedItemData | undefined>({});
+  const { data, clickLike, deleteItem } = useApiContext();
+
+  console.log(data, "data");
 
   useEffect(() => {
-    setState(adaptedList);
-  }, [listPic, listQuotes]);
-
-  useEffect(() => {
-    setModalData((prevState) => state.find((elem) => elem.id == prevState?.id));
-  }, [state]);
+    setModalData((prevState) => data.find((elem) => elem.id == prevState?.id));
+  }, [data]);
 
   const handleModalOpen = (id: string) => {
     setIsModalOpen(true);
-    // @ts-ignore
-    setModalData(state.find((elem) => elem.id == id));
+    setModalData(data.find((elem) => elem.id == id));
   };
 
   const handleClick = (id: string) => {
-    setState((prevState) => {
-      const result = prevState.map((elem) => {
-        if (elem.id === id) {
-          return { ...elem, isLiked: !elem.isLiked }; //...elem === копирование объекта по элементам {quote: elem.quote, pic: elem.pic, id: elem.id, isLiked: elem.isLiked}
-        }
-        return elem;
-      });
-      return result;
-    });
+    clickLike(id);
   };
 
   const handleDelete = (id: string) => {
-    setState((prevState) => prevState.filter((elem) => elem.id !== id));
+    deleteItem(id);
   };
 
-  const list = state.map((elem) => {
+  const list = data.map((elem) => {
     return (
       <ListItem
         item={elem}
