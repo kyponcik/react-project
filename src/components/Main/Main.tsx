@@ -2,40 +2,35 @@ import styles from "./Main.module.scss";
 import { useState } from "react";
 import { Button } from "./components/Button/Button";
 import { List } from "./components/List/List";
-import { getRandomQuotes } from "../../api/getRandomQuotes";
-import { getRandomPics } from "../../api/getRandomPics";
-import { Quote, Image } from "../../interfaces/List";
-import { quote } from "../../mocks/Quotes";
 import cx from "classnames";
 import { useThemeContext } from "../../context/ThemeProvider";
 import { Switch, FormControlLabel } from "@mui/material";
+import { useApiContext } from "../../context/ApiProvider";
 
 export const Main = () => {
-  const [state, setState] = useState<Quote[] | []>(quote);
-  const [pic, setPics] = useState<Image[] | []>([]);
   const [isDataLoaded, setDataLoaded] = useState(false);
-  const [isCurrentDataNSFW, setIsCurrentDataNSFW] = useState(false);
   const { value, setToDark, setToLight } = useThemeContext();
+  const {
+    quote,
+    listQuotesLoad,
+    clearList,
+    pics,
+    listPicLoaded,
+    listPicReload,
+  } = useApiContext();
 
   const handleClick = (isNSFW = false) => {
-    getRandomQuotes().then((quotes) => setState(quotes));
-    getRandomPics(isNSFW)
-      .then((pics) => setPics(pics.images.slice(0, 10)))
-      .then(() => {
-        setIsCurrentDataNSFW(isNSFW);
-        setDataLoaded(true);
-      });
+    listQuotesLoad();
+    listPicLoaded(isNSFW);
+    setDataLoaded(true);
   };
 
   const handleReloadPics = () => {
-    getRandomPics(isCurrentDataNSFW).then((pics) =>
-      setPics(pics.images.slice(0, 10))
-    );
+    listPicReload;
   };
 
   const handleClear = () => {
-    setState([]);
-    setPics([]);
+    clearList();
     setDataLoaded(false);
   };
 
@@ -75,10 +70,11 @@ export const Main = () => {
               Load
             </Button>
             <Button onClick={() => handleClick(true)}>Load NSFW</Button>
+            <Button onClick={() => handleClick}>Load pic</Button>
           </>
         )}
       </div>
-      {!!pic.length && <List listQuotes={state} listPic={pic} />}
+      {!!pics.length && <List listQuotes={quote} listPic={pics} />}
     </div>
   );
 };

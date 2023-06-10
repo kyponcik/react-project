@@ -1,10 +1,13 @@
 import { Main } from "./components/Main/Main";
 import { ThemeProvider } from "./context/ThemeProvider";
+import { ApiPorvider } from "./context/ApiProvider";
 
 function App() {
   return (
     <ThemeProvider>
-      <Main />
+      <ApiPorvider>
+        <Main />
+      </ApiPorvider>
     </ThemeProvider>
   );
 }

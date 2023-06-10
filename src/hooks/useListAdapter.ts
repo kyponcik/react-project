@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 export const useListAdapter = (listQuotes: Quote[], listPic: Image[]) => {
    
-   
    const isDataLoaded = !!listQuotes.length && !!listPic.length;
    const adaptedList = isDataLoaded && listPic.map((elem, i) => {
       return {

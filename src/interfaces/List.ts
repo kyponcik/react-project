@@ -17,17 +17,17 @@ export interface Image {
   image_id: number;
   favorites: number;
   dominant_color: string;
-  source: string;
+  source: string | null;
   artist: {
     artist_id: number;
     name: string;
     patreon: null;
-    pixiv: null;
-    twitter: string;
-    deviant_art: string;
-  };
+    pixiv:string | null;
+    twitter: string | null;
+    deviant_art: string | null;
+  } | null;
   uploaded_at: string;
-  liked_at: string;
+  liked_at: string | null;
   is_nsfw: boolean;
   width: number;
   height: number;
