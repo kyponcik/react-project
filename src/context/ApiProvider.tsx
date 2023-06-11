@@ -25,7 +25,7 @@ interface ApiContextInterface {
   listQuotesLoad: () => void;
   clearList: () => void;
   listPicLoaded: (isNSFW: boolean) => void;
-  listPicReload: (isNSFW: boolean) => void;
+  listPicReload: () => void;
   data: adaptedItemData[];
   clickLike: (id: string) => void;
   deleteItem: (id: string) => void;
@@ -37,7 +37,7 @@ export const ApiContext = createContext<ApiContextInterface>({
   listQuotesLoad: () => undefined,
   clearList: () => undefined,
   listPicLoaded: (isNSFW: boolean) => undefined,
-  listPicReload: (isNSFW: boolean) => undefined,
+  listPicReload: () => undefined,
   data: [],
   clickLike: (id: string) => undefined,
   deleteItem: (id: string) => undefined,
@@ -60,7 +60,7 @@ export const ApiPorvider = ({ children }: ApiProviderProps) => {
   }, [listPic, listQuote]);
 
   const listPicLoaded = (isNSFW: boolean) => {
-    setListPic(imgData);
+    /* setListPic(imgData); */
     getRandomPics(isNSFW).then((pics) => setListPic(pics.images.slice(0, 10)));
     setIsCurrentDataNSFW(isNSFW);
   };
@@ -85,6 +85,12 @@ export const ApiPorvider = ({ children }: ApiProviderProps) => {
     setState((prevState) => prevState.filter((elem) => elem.id !== id));
   };
 
+  const listPicReload = () => {
+    getRandomPics(isCurrentDataNSFW).then((pics) =>
+      setListPic(pics.images.slice(0, 10))
+    );
+  };
+
   return (
     <ApiContext.Provider
       value={{
@@ -92,10 +98,11 @@ export const ApiPorvider = ({ children }: ApiProviderProps) => {
         quote: listQuote,
         listQuotesLoad: listQuotesLoad,
         clearList: () => {
-          setQuote([]), setListPic([]);
+          setQuote([]);
+          setListPic([]);
         },
         listPicLoaded: listPicLoaded,
-        listPicReload: () => listPicLoaded(isCurrentDataNSFW),
+        listPicReload: listPicReload,
         data: state,
         clickLike: clickLike,
         deleteItem: deleteItem,

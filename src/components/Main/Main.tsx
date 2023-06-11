@@ -12,6 +12,9 @@ export const Main = () => {
   const { value, setToDark, setToLight } = useThemeContext();
   const { listQuotesLoad, clearList, pics, listPicLoaded, listPicReload } =
     useApiContext();
+  /* 
+  console.log(clearList, "function without ()"); */
+  /*   console.log(clearList(), "function with ()"); */
 
   const handleClick = (isNSFW = false) => {
     listQuotesLoad();
@@ -19,12 +22,8 @@ export const Main = () => {
     setDataLoaded(true);
   };
 
-  const handleReloadPics = () => {
-    listPicReload;
-  };
-
   const handleClear = () => {
-    clearList;
+    clearList();
     setDataLoaded(false);
   };
 
@@ -53,7 +52,7 @@ export const Main = () => {
         {isDataLoaded ? (
           <>
             <Button onClick={() => handleClear()}>Clear</Button>
-            <Button onClick={() => handleReloadPics()}>Reload</Button>
+            <Button onClick={() => listPicReload()}>Reload</Button>
           </>
         ) : (
           <>
@@ -64,7 +63,6 @@ export const Main = () => {
               Load
             </Button>
             <Button onClick={() => handleClick(true)}>Load NSFW</Button>
-            <Button onClick={() => handleClick}>Load pic</Button>
           </>
         )}
       </div>

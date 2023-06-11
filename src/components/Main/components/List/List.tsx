@@ -1,7 +1,5 @@
 import { ListItem } from "./components/ListItem";
-import { Quote, Image } from "../../../../interfaces/List";
 import { useState, useEffect } from "react";
-import { useListAdapter } from "../../../../hooks/useListAdapter";
 import styles from "./List.module.scss";
 import { adaptedItemData } from "../../../../interfaces/ListItem";
 import { Grid } from "@mui/material";
@@ -13,8 +11,6 @@ export const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<adaptedItemData | undefined>({});
   const { data, clickLike, deleteItem } = useApiContext();
-
-  console.log(data, "data");
 
   useEffect(() => {
     setModalData((prevState) => data.find((elem) => elem.id == prevState?.id));
