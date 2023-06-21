@@ -6,15 +6,17 @@ import cx from "classnames";
 import { useThemeContext } from "../../context/ThemeProvider";
 import { Switch, FormControlLabel } from "@mui/material";
 import { useApiContext } from "../../context/ApiProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { CLEAR_DATA } from "../../actions";
 
 export const Main = () => {
   const [isDataLoaded, setDataLoaded] = useState(false);
   const { value, setToDark, setToLight } = useThemeContext();
-  const { listQuotesLoad, clearList, pics, listPicLoaded, listPicReload } =
-    useApiContext();
-  /* 
-  console.log(clearList, "function without ()"); */
-  /*   console.log(clearList(), "function with ()"); */
+  const { listQuotesLoad, listPicLoaded, listPicReload } = useApiContext();
+
+  const isPicsLoaded = useSelector((state) => state.firstReducer.pics);
+  const isAdaptedDataLoaded = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const handleClick = (isNSFW = false) => {
     listQuotesLoad();
@@ -23,7 +25,7 @@ export const Main = () => {
   };
 
   const handleClear = () => {
-    clearList();
+    dispatch(CLEAR_DATA());
     setDataLoaded(false);
   };
 
@@ -66,7 +68,7 @@ export const Main = () => {
           </>
         )}
       </div>
-      {!!pics.length && <List />}
+      {!!isPicsLoaded.length && <List />}
     </div>
   );
 };

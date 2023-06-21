@@ -12,35 +12,27 @@ import { getRandomPics } from "../api/getRandomPics";
 import { img } from "../mocks/Images";
 import { useListAdapter } from "../hooks/useListAdapter";
 import { adaptedItemData } from "../interfaces/ListItem";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_QUOTES, GET_PICS } from "../actions";
 
 interface ApiProviderProps {
   children: ReactNode;
 }
 
-const imgData: Image[] = img.images.slice(0, 10);
-
 interface ApiContextInterface {
-  pics: Image[];
-  quote: Quote[];
   listQuotesLoad: () => void;
-  clearList: () => void;
   listPicLoaded: (isNSFW: boolean) => void;
   listPicReload: () => void;
-  data: adaptedItemData[];
+  adaptedData: adaptedItemData[];
   clickLike: (id: string) => void;
-  deleteItem: (id: string) => void;
 }
 
 export const ApiContext = createContext<ApiContextInterface>({
-  pics: imgData,
-  quote,
   listQuotesLoad: () => undefined,
-  clearList: () => undefined,
   listPicLoaded: (isNSFW: boolean) => undefined,
   listPicReload: () => undefined,
-  data: [],
+  adaptedData: [],
   clickLike: (id: string) => undefined,
-  deleteItem: (id: string) => undefined,
 });
 
 export const useApiContext = () => {
@@ -49,24 +41,21 @@ export const useApiContext = () => {
 };
 
 export const ApiPorvider = ({ children }: ApiProviderProps) => {
-  const [listQuote, setQuote] = useState(quote);
   const [listPic, setListPic] = useState<Image[]>([]);
-  const { adaptedList } = useListAdapter(listQuote, listPic);
+  const { adaptedList } = useListAdapter();
   const [isCurrentDataNSFW, setIsCurrentDataNSFW] = useState(false);
-  const [state, setState] = useState(adaptedList);
 
-  useEffect(() => {
-    setState(adaptedList);
-  }, [listPic, listQuote]);
+  const dispatch = useDispatch();
 
   const listPicLoaded = (isNSFW: boolean) => {
-    /* setListPic(imgData); */
-    getRandomPics(isNSFW).then((pics) => setListPic(pics.images.slice(0, 10)));
+    getRandomPics(isNSFW).then((pics) =>
+      dispatch(GET_PICS(pics.images.slice(0, 10)))
+    );
     setIsCurrentDataNSFW(isNSFW);
   };
 
   const listQuotesLoad = () => {
-    getRandomQuotes().then((quotes) => setQuote(quotes));
+    getRandomQuotes().then((quotes) => dispatch(GET_QUOTES(quotes)));
   };
 
   const clickLike = (id: string) => {
@@ -81,10 +70,6 @@ export const ApiPorvider = ({ children }: ApiProviderProps) => {
     });
   };
 
-  const deleteItem = (id: string) => {
-    setState((prevState) => prevState.filter((elem) => elem.id !== id));
-  };
-
   const listPicReload = () => {
     getRandomPics(isCurrentDataNSFW).then((pics) =>
       setListPic(pics.images.slice(0, 10))
@@ -94,18 +79,11 @@ export const ApiPorvider = ({ children }: ApiProviderProps) => {
   return (
     <ApiContext.Provider
       value={{
-        pics: listPic,
-        quote: listQuote,
         listQuotesLoad: listQuotesLoad,
-        clearList: () => {
-          setQuote([]);
-          setListPic([]);
-        },
         listPicLoaded: listPicLoaded,
         listPicReload: listPicReload,
-        data: state,
+        adaptedData: adaptedList,
         clickLike: clickLike,
-        deleteItem: deleteItem,
       }}
     >
       {children}

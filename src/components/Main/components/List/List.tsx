@@ -6,19 +6,25 @@ import { Grid } from "@mui/material";
 import { ListItemPreview } from "./components/ListItemPreview";
 import { Modal } from "../Modal/Modal";
 import { useApiContext } from "../../../../context/ApiProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { DELETE_ITEM } from "../../../../actions";
 
 export const List = () => {
+  const dispatch = useDispatch();
+  const adaptedDataFromStore = useSelector((state) => state.secondReducer);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<adaptedItemData | undefined>({});
-  const { data, clickLike, deleteItem } = useApiContext();
+  const { adaptedData, clickLike } = useApiContext();
 
   useEffect(() => {
-    setModalData((prevState) => data.find((elem) => elem.id == prevState?.id));
-  }, [data]);
+    setModalData((prevState) =>
+      adaptedData.find((elem) => elem.id == prevState?.id)
+    );
+  }, [adaptedData]);
 
   const handleModalOpen = (id: string) => {
     setIsModalOpen(true);
-    setModalData(data.find((elem) => elem.id == id));
+    setModalData(adaptedData.find((elem) => elem.id == id));
   };
 
   const handleClick = (id: string) => {
@@ -26,10 +32,10 @@ export const List = () => {
   };
 
   const handleDelete = (id: string) => {
-    deleteItem(id);
+    dispatch(DELETE_ITEM(id));
   };
 
-  const list = data.map((elem) => {
+  const list = adaptedDataFromStore.map((elem) => {
     return (
       <ListItem
         item={elem}
