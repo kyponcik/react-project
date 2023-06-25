@@ -5,16 +5,14 @@ import { adaptedItemData } from "../../../../interfaces/ListItem";
 import { Grid } from "@mui/material";
 import { ListItemPreview } from "./components/ListItemPreview";
 import { Modal } from "../Modal/Modal";
-import { useApiContext } from "../../../../context/ApiProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { DELETE_ITEM } from "../../../../actions";
+import { DELETE_ITEM, LIKED_ITEM } from "../../../../actions";
 
 export const List = () => {
   const dispatch = useDispatch();
-  const adaptedDataFromStore = useSelector((state) => state.secondReducer);
+  const adaptedData = useSelector((state) => state.secondReducer);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<adaptedItemData | undefined>({});
-  const { adaptedData, clickLike } = useApiContext();
 
   useEffect(() => {
     setModalData((prevState) =>
@@ -28,14 +26,14 @@ export const List = () => {
   };
 
   const handleClick = (id: string) => {
-    clickLike(id);
+    dispatch(LIKED_ITEM(id));
   };
 
   const handleDelete = (id: string) => {
     dispatch(DELETE_ITEM(id));
   };
 
-  const list = adaptedDataFromStore.map((elem) => {
+  const list = adaptedData.map((elem) => {
     return (
       <ListItem
         item={elem}

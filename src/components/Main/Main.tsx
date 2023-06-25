@@ -13,9 +13,7 @@ export const Main = () => {
   const [isDataLoaded, setDataLoaded] = useState(false);
   const { value, setToDark, setToLight } = useThemeContext();
   const { listQuotesLoad, listPicLoaded, listPicReload } = useApiContext();
-
   const isPicsLoaded = useSelector((state) => state.firstReducer.pics);
-  const isAdaptedDataLoaded = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handleClick = (isNSFW = false) => {

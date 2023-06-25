@@ -6,3 +6,4 @@ export interface adaptedItemData {
    id: string;
    isLiked: boolean;
 }
+

@@ -12,14 +12,13 @@ export const useListAdapter = () => {
    const isDataLoaded = !!listQuotes.length && !!listPic.length;
 
 
-   const adaptedList = isDataLoaded && listPic.map((elem, i) => {
+   
+    if(isDataLoaded){dispatch(GET_ADAPTED_DATA(listPic.map((elem, i) => {
       return {
         quote: listQuotes[i].quote,
         pic: elem.url,
         id: uuidv4(),
         isLiked: false,
       };
-    });
-    dispatch(GET_ADAPTED_DATA(adaptedList))
-    return {adaptedList: adaptedList ? adaptedList: []}
+    })))};
   };
